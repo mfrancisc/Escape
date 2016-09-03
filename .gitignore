@@ -8,4 +8,6 @@
 **/Binaries
 **/Content/StarterContent
 **/BuildingEscape.uproject
+**/xcuserdata
 
+BuildingEscape/BuildingEscape.xcworkspace/contents.xcworkspacedata
