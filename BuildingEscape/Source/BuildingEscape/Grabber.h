@@ -26,5 +26,13 @@ private:
     // How far a head of the player ca we reach in cm
     float Reach = 100.f;
 		
+    UPhysicsHandleComponent* PhysicsHandle = nullptr;
+    
+    UInputComponent* InputHandle = nullptr;
+    
+    // Ray-cast and grab whats in reach
+    void Grab();
 	
+    // Called when grab key is released
+    void Release();
 };

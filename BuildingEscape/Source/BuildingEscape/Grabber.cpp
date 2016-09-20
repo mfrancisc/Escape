@@ -17,6 +17,13 @@ UGrabber::UGrabber()
 	// ...
 }
 
+void UGrabber::Grab() {
+     UE_LOG(LogTemp, Warning, TEXT("Grab key pressed"))
+}
+
+void UGrabber::Release() {
+    UE_LOG(LogTemp, Warning, TEXT("Grab key released"))
+}
 
 // Called when the game starts
 void UGrabber::BeginPlay()
@@ -24,6 +31,28 @@ void UGrabber::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Warning, TEXT("Grapper reporting for duty"));
+    
+    /// Look for attached Physics Handle
+    PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+    if(PhysicsHandle)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Component PhysicsHandleComponent exists"))
+    } else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Component PhysicsHandleComponent missing from: %s"), *(GetOwner()->GetName()))
+    }
+    
+    /// Look for attached Input Component
+    InputHandle = GetOwner()->FindComponentByClass<UInputComponent>();
+    if(InputHandle){
+        UE_LOG(LogTemp, Warning, TEXT("Component InputComponent exists"));
+        /// Bind the input axis
+        InputHandle->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+        InputHandle->BindAction("Grab", IE_Released, this, &UGrabber::Release);
+    }else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Component InputComponent missing from: %s"), *(GetOwner()->GetName()))
+    }
 }
 
 
@@ -39,10 +68,10 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
                 OUT PlayerViewPointLocation,
                 OUT PlayerViewPointRotation
                                                                );
-    UE_LOG(LogTemp, Warning, TEXT("Player Location: %s , Player Rotation: %s "),
+   /* UE_LOG(LogTemp, Warning, TEXT("Player Location: %s , Player Rotation: %s "),
            *PlayerViewPointLocation.ToString(),
            *PlayerViewPointRotation.ToString()
-           );
+           );*/
     
     FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
     
