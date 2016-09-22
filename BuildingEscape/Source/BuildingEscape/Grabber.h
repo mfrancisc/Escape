@@ -51,9 +51,9 @@ private:
     void SetPlayerViewPoint();
     
     // Return current player location
-    FVector GetPlayerViewPointLocation();
+    FVector GetReachLineStart();
     
     // Return end of reach distance
-    FVector GetLineTraceEnd();
+    FVector GetReachLineEnd();
 };
 

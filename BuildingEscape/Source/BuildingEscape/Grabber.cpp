@@ -58,8 +58,6 @@ void UGrabber::SetUpInputComponent()
 {
     InputHandle = GetOwner()->FindComponentByClass<UInputComponent>();
     if(InputHandle){
-        UE_LOG(LogTemp, Warning, TEXT("Component InputComponent exists"));
-        /// Bind the input axis
         InputHandle->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
         InputHandle->BindAction("Grab", IE_Released, this, &UGrabber::Release);
     }else
@@ -73,10 +71,7 @@ void UGrabber::FindPhysicsHandleComponent()
 {
     /// Look for attached Physics Handle
     PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-    if(PhysicsHandle)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Component PhysicsHandleComponent exists"))
-    } else
+    if(PhysicsHandle == nullptr)
     {
         UE_LOG(LogTemp, Error, TEXT("Component PhysicsHandleComponent missing from: %s"), *(GetOwner()->GetName()))
     }
@@ -90,7 +85,7 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
     if(PhysicsHandle->GrabbedComponent)
     {
         // move the object that we're holding
-        PhysicsHandle->SetTargetLocation(GetLineTraceEnd());
+        PhysicsHandle->SetTargetLocation(GetReachLineEnd());
         
     }
 }
@@ -106,8 +101,8 @@ const FHitResult UGrabber::GetfirstPhysicsBodyInReach()
         FHitResult Hit;
         GetWorld()->LineTraceSingleByObjectType(
                                                 OUT Hit,
-                                                GetPlayerViewPointLocation(),
-                                                GetLineTraceEnd(),
+                                                GetReachLineStart(),
+                                                GetReachLineEnd(),
                                                 FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
                                                 TraceParameters
                                                 );
@@ -135,13 +130,13 @@ void UGrabber::SetPlayerViewPoint()
     LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
 }
 
-FVector UGrabber::GetPlayerViewPointLocation() {
+FVector UGrabber::GetReachLineStart() {
     SetPlayerViewPoint();
     
     return PlayerViewPointLocation;
 }
 
-FVector UGrabber::GetLineTraceEnd() {
+FVector UGrabber::GetReachLineEnd() {
     SetPlayerViewPoint();
     
     return LineTraceEnd;
