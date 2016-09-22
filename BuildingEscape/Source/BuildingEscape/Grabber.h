@@ -25,6 +25,10 @@ private:
     
     // How far a head of the player ca we reach in cm
     float Reach = 100.f;
+    
+    FVector PlayerViewPointLocation;
+    
+    FVector LineTraceEnd;
 		
     UPhysicsHandleComponent* PhysicsHandle = nullptr;
     
@@ -43,5 +47,13 @@ private:
     
     // Return hit for first physics body in reach
     const FHitResult GetfirstPhysicsBodyInReach();
+    
+    void SetPlayerViewPoint();
+    
+    // Return current player location
+    FVector GetPlayerViewPointLocation();
+    
+    // Return end of reach distance
+    FVector GetLineTraceEnd();
 };
 
