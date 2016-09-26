@@ -31,9 +31,6 @@ private:
     UPROPERTY(EditAnywhere)
     ATriggerVolume* PressurePlate;
     
-    UPROPERTY(VisibleAnywhere)
-    AActor* ActorThatOpens;
-    
     AActor* Owner;
     
     UPROPERTY(EditAnywhere)
@@ -44,4 +41,5 @@ private:
     void OpenTheDoor();
     void CloseTheDoor();
     bool TimeToCloseDoor();
+    float GetTotalMassOfActorsOnPlate();
 };
