@@ -26,6 +26,9 @@ void UGrabber::Grab()
     
     /// if we hit shomething then attach a physics handle
     if(ActorHit){
+        
+    if(!PhysicsHandle) return;
+        
     /// Attach physics handle rotation
     PhysicsHandle->GrabComponent(
                             ComponentToGrab,
@@ -40,6 +43,8 @@ void UGrabber::Grab()
 void UGrabber::Release()
 {
     UE_LOG(LogTemp, Warning, TEXT("Grab key released"))
+    
+    if(!PhysicsHandle) return;
     
     /// release physics handle
     PhysicsHandle->ReleaseComponent();
@@ -81,6 +86,8 @@ void UGrabber::FindPhysicsHandleComponent()
 void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
+    
+    if(!PhysicsHandle) return;
     
     if(PhysicsHandle->GrabbedComponent)
     {
